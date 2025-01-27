@@ -145,5 +145,6 @@ ENV/
 
 
 /ny_taxi_postgres_data
+/homework/ny_taxi_postgres_data
 
 /terrademo/keys/

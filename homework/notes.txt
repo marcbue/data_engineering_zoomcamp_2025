@@ -1,0 +1,167 @@
+Question 1:
+docker run python:3.12.8
+docker run -it python:3.12.8 bash
+Question 2:
+postgres container exposes the port 5432 into the network
+-------------
+docker network ls # to find the name of the docker network from docker-compose
+docker run -it \
+--network=homework_default \
+taxi_ingest:v003 \
+--user=root \
+--password=root \
+--host=pgdatabase \
+--port=5432 \
+--db=ny_taxi \
+--table_name=green_taxi_trips \
+--url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-10.csv.gz"
+-----------------------
+docker run -it \
+--network=homework_default \
+taxi_ingest:v003 \
+--user=root \
+--password=root \
+--host=pgdatabase \
+--port=5432 \
+--db=ny_taxi \
+--table_name=zones \
+--url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/misc/taxi_zone_lookup.csv"
+Question 3:
+SELECT 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	trip_distance,
+	CAST(lpep_pickup_datetime AS DATE) as pickup_date
+FROM green_taxi_trips AS gtt
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) >= '2019-10-01' AND CAST(lpep_dropoff_datetime AS DATE) < '2019-11-01'
+	AND trip_distance <= 1
+ORDER BY
+	CAST(lpep_pickup_datetime AS DATE) ASC;
+-----------------------------
+SELECT 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	trip_distance,
+	CAST(lpep_pickup_datetime AS DATE) as pickup_date
+FROM green_taxi_trips AS gtt
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) >= '2019-10-01' AND CAST(lpep_dropoff_datetime AS DATE) < '2019-11-01'
+	AND trip_distance > 1 AND trip_distance <= 3
+ORDER BY
+	CAST(lpep_pickup_datetime AS DATE) ASC;
+-----------------------------
+SELECT 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	trip_distance,
+	CAST(lpep_pickup_datetime AS DATE) as pickup_date
+FROM green_taxi_trips AS gtt
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) >= '2019-10-01' AND CAST(lpep_dropoff_datetime AS DATE) < '2019-11-01'
+	AND trip_distance > 3 AND trip_distance <= 7
+ORDER BY
+	CAST(lpep_pickup_datetime AS DATE) ASC;
+-----------------------------
+SELECT 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	trip_distance,
+	CAST(lpep_pickup_datetime AS DATE) as pickup_date
+FROM green_taxi_trips AS gtt
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) >= '2019-10-01' AND CAST(lpep_dropoff_datetime AS DATE) < '2019-11-01'
+	AND trip_distance > 7 AND trip_distance <= 10
+ORDER BY
+	CAST(lpep_pickup_datetime AS DATE) ASC;
+------------------------------
+SELECT 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	trip_distance,
+	CAST(lpep_pickup_datetime AS DATE) as pickup_date
+FROM green_taxi_trips AS gtt
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) >= '2019-10-01' AND CAST(lpep_dropoff_datetime AS DATE) < '2019-11-01'
+	AND trip_distance > 10
+ORDER BY
+	CAST(lpep_pickup_datetime AS DATE) ASC;
+Question 4:
+SELECT 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	trip_distance,
+	CAST(lpep_pickup_datetime AS DATE) as pickup_date
+FROM green_taxi_trips AS gtt
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) = '2019-10-11'
+ORDER BY
+	trip_distance DESC;
+----------------------------
+SELECT 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	trip_distance,
+	CAST(lpep_pickup_datetime AS DATE) as pickup_date
+FROM green_taxi_trips AS gtt
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) = '2019-10-24'
+ORDER BY
+	trip_distance DESC;
+-------------------------------
+SELECT 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	trip_distance,
+	CAST(lpep_pickup_datetime AS DATE) as pickup_date
+FROM green_taxi_trips AS gtt
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) = '2019-10-26'
+ORDER BY
+	trip_distance DESC;
+------------------------
+SELECT 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	trip_distance,
+	CAST(lpep_pickup_datetime AS DATE) as pickup_date
+FROM green_taxi_trips AS gtt
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) = '2019-10-31'
+ORDER BY
+	trip_distance DESC;
+Question 5:
+SELECT 
+	"Zone",
+	SUM(total_amount) AS total_amount_sum
+FROM green_taxi_trips AS gtt
+	JOIN zones
+	ON gtt."PULocationID" = zones."LocationID"
+WHERE
+	CAST(lpep_pickup_datetime AS DATE) = '2019-10-18'
+GROUP BY
+	zones."Zone"
+ORDER BY
+	total_amount_sum DESC;
+Question 6:
+SELECT 
+    zpu."Zone" AS pickup_zone,
+    zdo."Zone" AS dropoff_zone,
+    MAX(gtt.tip_amount) AS max_tip
+FROM green_taxi_trips AS gtt
+	JOIN zones AS zpu
+    	ON gtt."PULocationID" = zpu."LocationID"
+	JOIN zones AS zdo
+    	ON gtt."DOLocationID" = zdo."LocationID"
+WHERE
+    CAST(lpep_pickup_datetime AS DATE) >= '2019-10-01' AND CAST(lpep_pickup_datetime AS DATE) < '2019-11-01'
+    AND zpu."Zone" = 'East Harlem North'
+GROUP BY
+    zpu."Zone", zdo."Zone"
+ORDER BY
+    max_tip DESC;
+---------------------------------------------------
+cd ../terrademo
+terraform init
+terraform apply -auto-approve
+terraform destroy
