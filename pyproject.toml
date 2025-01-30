@@ -1,0 +1,25 @@
+[project]
+name = "de-zoom"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pgcli (>=4.1.0,<5.0.0)",
+    "pandas (>=2.2.3,<3.0.0)",
+    "pip (>=24.3.1,<25.0.0)",
+    "ipykernel (>=6.29.5,<7.0.0)",
+    "sqlalchemy (>=2.0.37,<3.0.0)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false

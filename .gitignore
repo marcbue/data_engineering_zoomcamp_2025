@@ -144,7 +144,7 @@ ENV/
 .mypy_cache/
 
 
-/ny_taxi_postgres_data
-/homework/ny_taxi_postgres_data
+/2_docker/ny_taxi_postgres_data
+/2_docker/homework/ny_taxi_postgres_data
 
-/terrademo/keys/
+/2_docker/terrademo/keys/
