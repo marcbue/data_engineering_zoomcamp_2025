@@ -148,3 +148,9 @@ ENV/
 /1_docker/homework/ny_taxi_postgres_data
 
 /1_docker/terrademo/keys/
+
+/3_data_warehouse/secrets
+
+*.hcl
+
+*.parquet
