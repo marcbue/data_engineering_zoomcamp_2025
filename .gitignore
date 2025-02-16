@@ -150,6 +150,7 @@ ENV/
 /1_docker/terrademo/keys/
 
 /3_data_warehouse/secrets
+/4_data_analytics/secrets
 
 *.hcl
 
