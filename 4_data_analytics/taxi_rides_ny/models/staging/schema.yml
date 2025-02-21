@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: staging
+    database: zoomcamp-week-4
+    schema: zoomcamp_week_4_dataset
+    tables:
+      - name: green_tripdata
+      - name: yellow_tripdata
