@@ -154,3 +154,5 @@ ENV/
 *.hcl
 
 *.parquet
+
+/4_data_analytics/*.csv
