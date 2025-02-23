@@ -27,8 +27,3 @@ monthly_percentiles as (
 
 select *
 from monthly_percentiles
--- select *
--- from monthly_percentiles
--- where pickup_year = 2020
---   and pickup_month = 4
---   and service_type in ('Green Taxi', 'Yellow Taxi')
