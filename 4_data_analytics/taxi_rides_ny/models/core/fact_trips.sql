@@ -5,20 +5,20 @@
 }}
 
 with green_tripdata as (
-    select *, 
+    select *,
         'Green' as service_type
     from {{ ref('stg_green_tripdata') }}
-), 
+),
 yellow_tripdata as (
-    select *, 
-        'Yellow' as service_type
+    select *,
+    'Yellow' as service_type
     from {{ ref('stg_yellow_tripdata') }}
-), 
+),
 trips_unioned as (
     select * from green_tripdata
-    union all 
+    union all
     select * from yellow_tripdata
-), 
+),
 dim_zones as (
     select * from {{ ref('dim_zones') }}
     where borough != 'Unknown'
@@ -33,7 +33,15 @@ select trips_unioned.tripid,
     trips_unioned.dropoff_locationid,
     dropoff_zone.borough as dropoff_borough, 
     dropoff_zone.zone as dropoff_zone,  
-    trips_unioned.pickup_datetime, 
+    trips_unioned.pickup_datetime,
+    EXTRACT(YEAR    FROM trips_unioned.pickup_datetime) AS pickup_year,
+    EXTRACT(QUARTER FROM trips_unioned.pickup_datetime) AS pickup_quarter,
+    CONCAT(
+      CAST(EXTRACT(YEAR FROM trips_unioned.pickup_datetime) AS STRING),
+      '/Q',
+      CAST(EXTRACT(QUARTER FROM trips_unioned.pickup_datetime) AS STRING)
+    )                                 AS pickup_year_quarter,
+    EXTRACT(MONTH   FROM trips_unioned.pickup_datetime) AS pickup_month,
     trips_unioned.dropoff_datetime, 
     trips_unioned.store_and_fwd_flag, 
     trips_unioned.passenger_count, 
