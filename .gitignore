@@ -156,3 +156,11 @@ ENV/
 *.parquet
 
 /4_data_analytics/*.csv
+/5_batch/*.csv
+/5_batch/*.parquet
+/5_batch/data
+/5_batch/fhvhv
+/5_batch/tmp
+/5_batch/zones
+
+/spark
